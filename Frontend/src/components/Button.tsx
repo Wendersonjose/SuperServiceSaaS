@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Loader2 } from 'lucide-react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'warning' | 'success';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
@@ -81,6 +81,30 @@ const variantStyles = {
   `,
   danger: css`
     background-color: ${props => props.theme.colors.error};
+    color: white;
+    
+    &:hover:not(:disabled) {
+      filter: brightness(0.9);
+    }
+    
+    &:active:not(:disabled) {
+      filter: brightness(0.85);
+    }
+  `,
+  warning: css`
+    background-color: ${props => props.theme.colors.warning};
+    color: white;
+    
+    &:hover:not(:disabled) {
+      filter: brightness(0.9);
+    }
+    
+    &:active:not(:disabled) {
+      filter: brightness(0.85);
+    }
+  `,
+  success: css`
+    background-color: ${props => props.theme.colors.success};
     color: white;
     
     &:hover:not(:disabled) {

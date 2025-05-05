@@ -6,7 +6,7 @@ import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-
+import Appointment from './pages/Appointment';
 
 // Layouts
 import AuthLayout from './layouts/AuthLayout';
@@ -35,7 +35,7 @@ function App() {
       {/* Protected routes */}
       <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<Dashboard />} />
-        
+        <Route path="/appointments" element={<Appointment />} /> 
       </Route>
       
       {/* Redirect root to dashboard or login */}
