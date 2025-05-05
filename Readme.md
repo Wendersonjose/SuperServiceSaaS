@@ -1,3 +1,37 @@
+# SuperServiceSaaS
+
+Bem-vindo ao repositório do projeto **SuperServiceSaaS**!  
+Este projeto foi desenvolvido com fins educacionais e colaborativos.  
+Siga as instruções abaixo para realizar um fork e começar a contribuir.
+
+## ✅ Como fazer o fork do repositório
+
+1. Acesse o repositório original:
+   👉 [https://github.com/Wendersonjose/SuperServiceSaaS](https://github.com/Wendersonjose/SuperServiceSaaS)
+
+2. No canto superior direito da página, clique no botão **Fork**.
+
+3. Escolha a sua conta pessoal do GitHub (ou organização, se for o caso).
+
+4. Após o fork, você terá uma cópia do repositório em seu perfil.
+
+---
+
+## 💻 Como clonar o repositório fork
+
+1. Acesse **o repositório fork na sua conta**.
+
+2. Clique no botão **Code** e copie o link HTTPS ou SSH.
+
+3. No seu terminal, digite:
+
+```bash
+git clone https://github.com/seu-usuario/SuperServiceSaaS.git
+
+Acesse a pasta do projeto:
+
+cd SuperServiceSaaS. 
+
 # Projeto de Software SaaS para Gestão de Prestação de Serviços
 
 ## Sumário
