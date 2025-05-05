@@ -1,0 +1,294 @@
+@startuml Diagrama de Classes - Sistema SaaS para Gestão de Serviços
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam shadowing false
+skinparam linetype ortho
+
+title Diagrama de Classes - Sistema SaaS para Gestão de Serviços
+
+' Classes principais
+class Usuario {
+  -id: Long
+  -nome: String
+  -email: String
+  -senha: String
+  -telefone: String
+  -tipo: TipoUsuario
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +autenticar(): Boolean
+  +alterarSenha(): Boolean
+}
+
+class Empresa {
+  -id: Long
+  -nome: String
+  -cnpj: String
+  -endereco: String
+  -telefone: String
+  -email: String
+  -logo: String
+  -tipoNegocio: TipoNegocio
+  -configuracoes: Map<String, Object>
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +adicionarUsuario(usuario: Usuario): Boolean
+  +configurarTemplate(): Boolean
+}
+
+class Cliente {
+  -id: Long
+  -nome: String
+  -email: String
+  -telefone: String
+  -endereco: String
+  -cpfCnpj: String
+  -observacoes: String
+  -pontosFidelidade: Integer
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +agendarServico(): Agendamento
+  +cancelarAgendamento(): Boolean
+  +visualizarHistorico(): List<Agendamento>
+}
+
+class Profissional {
+  -id: Long
+  -usuario: Usuario
+  -especialidades: List<Servico>
+  -comissao: Double
+  -disponibilidade: List<HorarioDisponivel>
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +adicionarDisponibilidade(): Boolean
+  +removerDisponibilidade(): Boolean
+  +calcularComissao(): Double
+}
+
+class Servico {
+  -id: Long
+  -nome: String
+  -descricao: String
+  -preco: Double
+  -duracao: Integer
+  -categoria: Categoria
+  -empresa: Empresa
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +calcularPrecoFinal(): Double
+}
+
+class Categoria {
+  -id: Long
+  -nome: String
+  -descricao: String
+  -empresa: Empresa
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+}
+
+class Agendamento {
+  -id: Long
+  -cliente: Cliente
+  -servico: Servico
+  -profissional: Profissional
+  -dataHoraInicio: DateTime
+  -dataHoraFim: DateTime
+  -status: StatusAgendamento
+  -observacoes: String
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +confirmar(): Boolean
+  +cancelar(): Boolean
+  +reagendar(): Boolean
+  +notificarCliente(): Boolean
+}
+
+class Pagamento {
+  -id: Long
+  -agendamento: Agendamento
+  -valor: Double
+  -formaPagamento: FormaPagamento
+  -status: StatusPagamento
+  -dataHora: DateTime
+  -transacaoId: String
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +processar(): Boolean
+  +estornar(): Boolean
+  +emitirRecibo(): Boolean
+}
+
+class Notificacao {
+  -id: Long
+  -destinatario: String
+  -tipo: TipoNotificacao
+  -conteudo: String
+  -canal: CanalNotificacao
+  -status: StatusNotificacao
+  -dataEnvio: DateTime
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +enviar(): Boolean
+  +verificarStatus(): StatusNotificacao
+}
+
+class Template {
+  -id: Long
+  -nome: String
+  -tipoNegocio: TipoNegocio
+  -configuracoes: Map<String, Object>
+  -campos: List<CampoPersonalizado>
+  -fluxos: List<FluxoTrabalho>
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +aplicar(empresa: Empresa): Boolean
+  +personalizar(): Boolean
+}
+
+class HorarioDisponivel {
+  -id: Long
+  -profissional: Profissional
+  -diaSemana: DiaSemana
+  -horaInicio: Time
+  -horaFim: Time
+  -recorrente: Boolean
+  -dataEspecifica: Date
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+}
+
+class Relatorio {
+  -id: Long
+  -tipo: TipoRelatorio
+  -parametros: Map<String, Object>
+  -dataInicio: Date
+  -dataFim: Date
+  -formato: FormatoRelatorio
+  -empresa: Empresa
+  -dataCriacao: Date
+  -dataAtualizacao: Date
+  +gerar(): Boolean
+  +exportar(): Boolean
+}
+
+' Enumerações
+enum TipoUsuario {
+  ADMIN
+  GERENTE
+  PROFISSIONAL
+  CLIENTE
+}
+
+enum TipoNegocio {
+  LAVA_JATO
+  OFICINA_MECANICA
+  SALAO_BELEZA
+  CONSULTORIO_MEDICO
+  CLINICA_ESTETICA
+  PERSONALIZADO
+}
+
+enum StatusAgendamento {
+  PENDENTE
+  CONFIRMADO
+  CANCELADO
+  CONCLUIDO
+  REAGENDADO
+  NO_SHOW
+}
+
+enum FormaPagamento {
+  DINHEIRO
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  PIX
+  TRANSFERENCIA
+  BOLETO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  PROCESSANDO
+  APROVADO
+  RECUSADO
+  ESTORNADO
+  CANCELADO
+}
+
+enum TipoNotificacao {
+  CONFIRMACAO_AGENDAMENTO
+  LEMBRETE_AGENDAMENTO
+  CANCELAMENTO
+  REAGENDAMENTO
+  CONFIRMACAO_PAGAMENTO
+  PROMOCAO
+}
+
+enum CanalNotificacao {
+  EMAIL
+  SMS
+  WHATSAPP
+  PUSH
+}
+
+enum StatusNotificacao {
+  PENDENTE
+  ENVIADO
+  ENTREGUE
+  LIDO
+  FALHA
+}
+
+enum DiaSemana {
+  DOMINGO
+  SEGUNDA
+  TERCA
+  QUARTA
+  QUINTA
+  SEXTA
+  SABADO
+}
+
+enum TipoRelatorio {
+  FINANCEIRO
+  AGENDAMENTOS
+  CLIENTES
+  SERVICOS
+  PROFISSIONAIS
+  DESEMPENHO
+}
+
+enum FormatoRelatorio {
+  PDF
+  EXCEL
+  CSV
+  HTML
+}
+
+' Relacionamentos
+Usuario "1" -- "0..1" Profissional
+Usuario "1" -- "0..1" Cliente
+Usuario "*" -- "1" Empresa
+
+Empresa "1" -- "*" Servico
+Empresa "1" -- "*" Categoria
+Empresa "1" -- "*" Profissional
+Empresa "1" -- "*" Relatorio
+Empresa "1" -- "1" Template
+
+Cliente "1" -- "*" Agendamento
+Profissional "1" -- "*" Agendamento
+Profissional "1" -- "*" HorarioDisponivel
+Profissional "*" -- "*" Servico
+
+Servico "1" -- "*" Agendamento
+Servico "*" -- "1" Categoria
+
+Agendamento "1" -- "0..1" Pagamento
+Agendamento "1" -- "*" Notificacao
+
+Template "1" -- "*" Empresa
+
+@enduml

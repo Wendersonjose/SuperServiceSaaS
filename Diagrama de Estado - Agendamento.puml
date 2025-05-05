@@ -1,0 +1,33 @@
+@startuml Diagrama de Estado - Agendamento
+
+skinparam state {
+  BackgroundColor white
+  BorderColor black
+  ArrowColor black
+}
+
+title Diagrama de Estado - Ciclo de Vida de um Agendamento
+
+[*] --> Pendente : Agendamento criado
+
+state Pendente {
+  [*] --> AguardandoConfirmacao
+  AguardandoConfirmacao --> Confirmado : Cliente confirma
+  AguardandoConfirmacao --> Cancelado : Tempo limite excedido
+}
+
+Pendente --> Confirmado : Confirmação automática
+Pendente --> Cancelado : Cliente cancela
+Confirmado --> EmAndamento : Data/hora do agendamento
+Confirmado --> Reagendado : Cliente solicita reagendamento
+Confirmado --> Cancelado : Cancelamento com antecedência
+EmAndamento --> Concluido : Serviço finalizado
+EmAndamento --> Cancelado : Problema durante execução
+Reagendado --> Confirmado : Novo horário confirmado
+Confirmado --> NoShow : Cliente não comparece
+
+Concluido --> [*]
+Cancelado --> [*]
+NoShow --> [*]
+
+@enduml

@@ -1,0 +1,212 @@
+@startuml Modelo de Banco de Dados - Sistema SaaS para Gestão de Serviços
+
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <b>x</b>
+!define foreign_key(x) <u>x</u>
+
+skinparam class {
+  BackgroundColor white
+  BorderColor black
+  ArrowColor black
+}
+
+title Modelo de Banco de Dados - Sistema SaaS para Gestão de Serviços
+
+' Tabelas
+table(usuarios) {
+  primary_key(id) : BIGINT
+  nome : VARCHAR(100)
+  email : VARCHAR(100)
+  senha : VARCHAR(255)
+  telefone : VARCHAR(20)
+  tipo : ENUM
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(empresas) {
+  primary_key(id) : BIGINT
+  nome : VARCHAR(100)
+  cnpj : VARCHAR(20)
+  endereco : VARCHAR(255)
+  telefone : VARCHAR(20)
+  email : VARCHAR(100)
+  logo : VARCHAR(255)
+  tipo_negocio : ENUM
+  configuracoes : JSON
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(usuarios_empresas) {
+  primary_key(id) : BIGINT
+  foreign_key(usuario_id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  cargo : VARCHAR(50)
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(clientes) {
+  primary_key(id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  foreign_key(usuario_id) : BIGINT
+  nome : VARCHAR(100)
+  email : VARCHAR(100)
+  telefone : VARCHAR(20)
+  endereco : VARCHAR(255)
+  cpf_cnpj : VARCHAR(20)
+  observacoes : TEXT
+  pontos_fidelidade : INTEGER
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(profissionais) {
+  primary_key(id) : BIGINT
+  foreign_key(usuario_id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  comissao : DECIMAL(5,2)
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(categorias) {
+  primary_key(id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  nome : VARCHAR(100)
+  descricao : TEXT
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(servicos) {
+  primary_key(id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  foreign_key(categoria_id) : BIGINT
+  nome : VARCHAR(100)
+  descricao : TEXT
+  preco : DECIMAL(10,2)
+  duracao : INTEGER
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(profissionais_servicos) {
+  primary_key(id) : BIGINT
+  foreign_key(profissional_id) : BIGINT
+  foreign_key(servico_id) : BIGINT
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(horarios_disponiveis) {
+  primary_key(id) : BIGINT
+  foreign_key(profissional_id) : BIGINT
+  dia_semana : ENUM
+  hora_inicio : TIME
+  hora_fim : TIME
+  recorrente : BOOLEAN
+  data_especifica : DATE
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(agendamentos) {
+  primary_key(id) : BIGINT
+  foreign_key(cliente_id) : BIGINT
+  foreign_key(servico_id) : BIGINT
+  foreign_key(profissional_id) : BIGINT
+  data_hora_inicio : TIMESTAMP
+  data_hora_fim : TIMESTAMP
+  status : ENUM
+  observacoes : TEXT
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(pagamentos) {
+  primary_key(id) : BIGINT
+  foreign_key(agendamento_id) : BIGINT
+  valor : DECIMAL(10,2)
+  forma_pagamento : ENUM
+  status : ENUM
+  data_hora : TIMESTAMP
+  transacao_id : VARCHAR(100)
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(notificacoes) {
+  primary_key(id) : BIGINT
+  destinatario : VARCHAR(100)
+  tipo : ENUM
+  conteudo : TEXT
+  canal : ENUM
+  status : ENUM
+  data_envio : TIMESTAMP
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(templates) {
+  primary_key(id) : BIGINT
+  nome : VARCHAR(100)
+  tipo_negocio : ENUM
+  configuracoes : JSON
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(campos_personalizados) {
+  primary_key(id) : BIGINT
+  foreign_key(template_id) : BIGINT
+  nome : VARCHAR(100)
+  tipo : VARCHAR(50)
+  obrigatorio : BOOLEAN
+  opcoes : JSON
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+table(relatorios) {
+  primary_key(id) : BIGINT
+  foreign_key(empresa_id) : BIGINT
+  tipo : ENUM
+  parametros : JSON
+  data_inicio : DATE
+  data_fim : DATE
+  formato : ENUM
+  data_criacao : TIMESTAMP
+  data_atualizacao : TIMESTAMP
+}
+
+' Relacionamentos
+usuarios "1" -- "0..n" usuarios_empresas
+empresas "1" -- "0..n" usuarios_empresas
+empresas "1" -- "0..n" clientes
+empresas "1" -- "0..n" profissionais
+empresas "1" -- "0..n" categorias
+empresas "1" -- "0..n" servicos
+empresas "1" -- "0..n" relatorios
+empresas "n" -- "1" templates
+
+usuarios "1" -- "0..1" clientes
+usuarios "1" -- "0..1" profissionais
+
+categorias "1" -- "0..n" servicos
+
+profissionais "1" -- "0..n" profissionais_servicos
+servicos "1" -- "0..n" profissionais_servicos
+
+profissionais "1" -- "0..n" horarios_disponiveis
+profissionais "1" -- "0..n" agendamentos
+clientes "1" -- "0..n" agendamentos
+servicos "1" -- "0..n" agendamentos
+
+agendamentos "1" -- "0..1" pagamentos
+agendamentos "1" -- "0..n" notificacoes
+
+templates "1" -- "0..n" campos_personalizados
+
+@enduml

@@ -1,0 +1,100 @@
+@startuml Diagrama de Componentes - Sistema SaaS para Gestão de Serviços
+
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor white
+  BorderColor black
+  ArrowColor black
+}
+
+title Diagrama de Componentes - Sistema SaaS para Gestão de Serviços
+
+package "Frontend" {
+  [Interface Web] as WebUI
+  [Interface Mobile] as MobileUI
+  [Componentes React] as ReactComponents
+  [Gerenciador de Estado] as StateManager
+}
+
+package "Backend" {
+  [API Gateway] as APIGateway
+  
+  package "Microserviços" {
+    [Serviço de Autenticação] as AuthService
+    [Serviço de Agendamento] as ScheduleService
+    [Serviço de Clientes] as ClientService
+    [Serviço de Pagamentos] as PaymentService
+    [Serviço de Notificações] as NotificationService
+    [Serviço de Templates] as TemplateService
+    [Serviço de Relatórios] as ReportService
+  }
+  
+  package "Infraestrutura" {
+    [Gerenciador de Filas] as QueueManager
+    [Cache] as Cache
+    [Serviço de Logs] as LogService
+    [Serviço de Monitoramento] as MonitoringService
+  }
+}
+
+package "Banco de Dados" {
+  database "Banco Relacional" as RelationalDB
+  database "Banco NoSQL" as NoSQLDB
+}
+
+package "Serviços Externos" {
+  [API WhatsApp] as WhatsAppAPI
+  [Gateway de Pagamento] as PaymentGateway
+  [Serviço de Email] as EmailService
+}
+
+' Conexões Frontend
+WebUI --> ReactComponents
+MobileUI --> ReactComponents
+ReactComponents --> StateManager
+StateManager --> APIGateway : HTTP/REST
+
+' Conexões Backend
+APIGateway --> AuthService
+APIGateway --> ScheduleService
+APIGateway --> ClientService
+APIGateway --> PaymentService
+APIGateway --> NotificationService
+APIGateway --> TemplateService
+APIGateway --> ReportService
+
+' Conexões Microserviços
+AuthService --> QueueManager
+ScheduleService --> QueueManager
+ClientService --> QueueManager
+PaymentService --> QueueManager
+NotificationService --> QueueManager
+
+AuthService --> Cache
+ScheduleService --> Cache
+ClientService --> Cache
+PaymentService --> Cache
+
+' Conexões Banco de Dados
+AuthService --> RelationalDB
+ScheduleService --> RelationalDB
+ClientService --> RelationalDB
+PaymentService --> RelationalDB
+NotificationService --> RelationalDB
+TemplateService --> RelationalDB
+ReportService --> RelationalDB
+
+TemplateService --> NoSQLDB
+NotificationService --> NoSQLDB
+
+' Conexões Serviços Externos
+NotificationService --> WhatsAppAPI
+NotificationService --> EmailService
+PaymentService --> PaymentGateway
+
+' Conexões Infraestrutura
+QueueManager --> LogService
+Cache --> LogService
+LogService --> MonitoringService
+
+@enduml

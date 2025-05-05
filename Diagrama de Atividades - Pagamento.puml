@@ -1,0 +1,56 @@
+@startuml Diagrama de Atividades - Processo de Pagamento
+
+skinparam activity {
+  BackgroundColor white
+  BorderColor black
+  ArrowColor black
+}
+
+title Diagrama de Atividades - Processo de Pagamento
+
+start
+
+:Cliente seleciona forma de pagamento;
+
+if (Pagamento online?) then (sim)
+  :Redirecionar para gateway de pagamento;
+  :Cliente insere dados de pagamento;
+  
+  if (Pagamento aprovado?) then (sim)
+    :Registrar pagamento como aprovado;
+    :Emitir recibo;
+    :Enviar confirmação por WhatsApp;
+  else (não)
+    :Registrar falha no pagamento;
+    :Notificar cliente sobre falha;
+    :Oferecer alternativa de pagamento;
+  endif
+  
+else (não)
+  :Registrar pagamento como pendente;
+  :Gerar QR Code ou dados para pagamento;
+  
+  fork
+    :Enviar instruções por WhatsApp;
+  fork again
+    :Exibir instruções na tela;
+  end fork
+  
+  :Aguardar confirmação de pagamento;
+  
+  if (Pagamento confirmado?) then (sim)
+    :Atualizar status para aprovado;
+    :Emitir recibo;
+  else (não)
+    :Enviar lembrete após tempo limite;
+    :Manter status como pendente;
+  endif
+endif
+
+:Atualizar histórico financeiro;
+:Registrar comissão do profissional;
+:Atualizar relatórios financeiros;
+
+stop
+
+@enduml

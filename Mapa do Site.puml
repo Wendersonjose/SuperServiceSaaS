@@ -1,0 +1,134 @@
+@startuml Mapa do Site - Sistema SaaS para Gestão de Serviços
+
+skinparam rectangle {
+  BackgroundColor white
+  BorderColor black
+}
+
+title Mapa do Site - Sistema SaaS para Gestão de Serviços
+
+rectangle "Login/Registro" {
+  rectangle "Login" as Login
+  rectangle "Registro" as Registro
+  rectangle "Recuperação de Senha" as RecuperacaoSenha
+}
+
+rectangle "Dashboard" as Dashboard {
+  rectangle "Visão Geral" as VisaoGeral
+  rectangle "Indicadores" as Indicadores
+  rectangle "Agenda do Dia" as AgendaDia
+  rectangle "Notificações" as Notificacoes
+}
+
+rectangle "Agendamentos" as Agendamentos {
+  rectangle "Calendário" as Calendario
+  rectangle "Novo Agendamento" as NovoAgendamento
+  rectangle "Lista de Agendamentos" as ListaAgendamentos
+  rectangle "Detalhes do Agendamento" as DetalhesAgendamento
+}
+
+rectangle "Clientes" as Clientes {
+  rectangle "Lista de Clientes" as ListaClientes
+  rectangle "Novo Cliente" as NovoCliente
+  rectangle "Perfil do Cliente" as PerfilCliente
+  rectangle "Histórico do Cliente" as HistoricoCliente
+}
+
+rectangle "Serviços" as Servicos {
+  rectangle "Catálogo de Serviços" as CatalogoServicos
+  rectangle "Novo Serviço" as NovoServico
+  rectangle "Categorias" as Categorias
+  rectangle "Preços" as Precos
+}
+
+rectangle "Profissionais" as Profissionais {
+  rectangle "Lista de Profissionais" as ListaProfissionais
+  rectangle "Novo Profissional" as NovoProfissional
+  rectangle "Perfil do Profissional" as PerfilProfissional
+  rectangle "Agenda do Profissional" as AgendaProfissional
+}
+
+rectangle "Financeiro" as Financeiro {
+  rectangle "Pagamentos" as Pagamentos
+  rectangle "Relatório Financeiro" as RelatorioFinanceiro
+  rectangle "Comissões" as Comissoes
+  rectangle "Faturamento" as Faturamento
+}
+
+rectangle "Comunicação" as Comunicacao {
+  rectangle "WhatsApp" as WhatsApp
+  rectangle "Modelos de Mensagens" as ModelosMensagens
+  rectangle "Histórico de Mensagens" as HistoricoMensagens
+  rectangle "Campanhas" as Campanhas
+}
+
+rectangle "Relatórios" as Relatorios {
+  rectangle "Relatórios de Vendas" as RelatoriosVendas
+  rectangle "Relatórios de Clientes" as RelatoriosClientes
+  rectangle "Relatórios de Serviços" as RelatoriosServicos
+  rectangle "Relatórios de Desempenho" as RelatoriosDesempenho
+}
+
+rectangle "Configurações" as Configuracoes {
+  rectangle "Perfil da Empresa" as PerfilEmpresa
+  rectangle "Usuários e Permissões" as UsuariosPermissoes
+  rectangle "Templates" as Templates
+  rectangle "Integrações" as Integracoes
+}
+
+' Relacionamentos
+Login --> Dashboard
+Registro --> Dashboard
+RecuperacaoSenha --> Login
+
+Dashboard --> VisaoGeral
+Dashboard --> Agendamentos
+Dashboard --> Clientes
+Dashboard --> Servicos
+Dashboard --> Profissionais
+Dashboard --> Financeiro
+Dashboard --> Comunicacao
+Dashboard --> Relatorios
+Dashboard --> Configuracoes
+
+Agendamentos --> Calendario
+Agendamentos --> NovoAgendamento
+Agendamentos --> ListaAgendamentos
+ListaAgendamentos --> DetalhesAgendamento
+
+Clientes --> ListaClientes
+Clientes --> NovoCliente
+ListaClientes --> PerfilCliente
+PerfilCliente --> HistoricoCliente
+
+Servicos --> CatalogoServicos
+Servicos --> NovoServico
+Servicos --> Categorias
+Servicos --> Precos
+
+Profissionais --> ListaProfissionais
+Profissionais --> NovoProfissional
+ListaProfissionais --> PerfilProfissional
+PerfilProfissional --> AgendaProfissional
+
+Financeiro --> Pagamentos
+Financeiro --> RelatorioFinanceiro
+Financeiro --> Comissoes
+Financeiro --> Faturamento
+
+Comunicacao --> WhatsApp
+Comunicacao --> ModelosMensagens
+Comunicacao --> HistoricoMensagens
+Comunicacao --> Campanhas
+
+Relatorios --> RelatoriosVendas
+Relatorios --> RelatoriosClientes
+Relatorios --> RelatoriosServicos
+Relatorios --> RelatoriosDesempenho
+
+Configuracoes --> PerfilEmpresa
+Configuracoes --> UsuariosPermissoes
+Configuracoes --> Templates
+Configuracoes --> Integracoes
+
+@enduml

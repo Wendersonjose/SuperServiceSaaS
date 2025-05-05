@@ -1,0 +1,117 @@
+@startuml Diagrama de Casos de Uso - Sistema SaaS para Gestão de Serviços
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam roundcorner 20
+skinparam linetype ortho
+
+title Diagrama de Casos de Uso - Sistema SaaS para Gestão de Serviços
+
+' Atores
+actor "Administrador" as Admin
+actor "Prestador de Serviço" as Prestador
+actor "Cliente" as Cliente
+actor "Sistema de Pagamento" as SistemaPagamento
+actor "WhatsApp" as WhatsApp
+
+' Pacotes e casos de uso
+rectangle "Sistema SaaS para Gestão de Serviços" {
+  package "Gestão de Usuários" {
+    usecase "Gerenciar Perfis" as UC1
+    usecase "Configurar Permissões" as UC2
+    usecase "Gerenciar Templates" as UC3
+  }
+  
+  package "Agendamento" {
+    usecase "Visualizar Agenda" as UC4
+    usecase "Agendar Serviço" as UC5
+    usecase "Cancelar Agendamento" as UC6
+    usecase "Reagendar Serviço" as UC7
+    usecase "Bloquear Horários" as UC8
+  }
+  
+  package "Serviços" {
+    usecase "Cadastrar Serviços" as UC9
+    usecase "Definir Preços" as UC10
+    usecase "Associar Profissionais" as UC11
+    usecase "Categorizar Serviços" as UC12
+  }
+  
+  package "Clientes" {
+    usecase "Cadastrar Cliente" as UC13
+    usecase "Visualizar Histórico" as UC14
+    usecase "Gerenciar Fidelidade" as UC15
+  }
+  
+  package "Pagamentos" {
+    usecase "Registrar Pagamento" as UC16
+    usecase "Emitir Recibo" as UC17
+    usecase "Gerar Relatório Financeiro" as UC18
+    usecase "Processar Pagamento Online" as UC19
+  }
+  
+  package "Comunicação" {
+    usecase "Enviar Confirmação" as UC20
+    usecase "Enviar Lembrete" as UC21
+    usecase "Notificar Pagamento" as UC22
+    usecase "Enviar Promoção" as UC23
+  }
+  
+  package "Relatórios" {
+    usecase "Visualizar Dashboard" as UC24
+    usecase "Gerar Relatórios" as UC25
+    usecase "Analisar Desempenho" as UC26
+  }
+}
+
+' Relacionamentos
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC9
+Admin --> UC10
+Admin --> UC12
+Admin --> UC24
+Admin --> UC25
+Admin --> UC26
+
+Prestador --> UC4
+Prestador --> UC5
+Prestador --> UC6
+Prestador --> UC7
+Prestador --> UC8
+Prestador --> UC11
+Prestador --> UC13
+Prestador --> UC14
+Prestador --> UC15
+Prestador --> UC16
+Prestador --> UC17
+Prestador --> UC24
+
+Cliente --> UC4
+Cliente --> UC5
+Cliente --> UC6
+Cliente --> UC7
+Cliente --> UC14
+Cliente --> UC19
+
+SistemaPagamento --> UC19
+UC19 --> UC16
+UC16 --> UC17
+UC16 --> UC22
+
+WhatsApp --> UC20
+WhatsApp --> UC21
+WhatsApp --> UC22
+WhatsApp --> UC23
+
+' Inclusões e extensões
+UC5 ..> UC20 : <<include>>
+UC5 ..> UC21 : <<include>>
+UC16 ..> UC17 : <<include>>
+UC16 ..> UC22 : <<include>>
+UC7 ..> UC20 : <<include>>
+UC7 ..> UC21 : <<include>>
+
+@enduml

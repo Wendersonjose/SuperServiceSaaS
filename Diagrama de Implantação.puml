@@ -1,0 +1,87 @@
+@startuml Diagrama de Implantação - Sistema SaaS para Gestão de Serviços
+
+skinparam node {
+  BackgroundColor white
+  BorderColor black
+}
+
+skinparam database {
+  BackgroundColor lightblue
+}
+
+skinparam cloud {
+  BackgroundColor lightskyblue
+}
+
+title Diagrama de Implantação - Sistema SaaS para Gestão de Serviços
+
+cloud "Nuvem" {
+  node "Cluster Kubernetes" {
+    node "Frontend" {
+      [Aplicação React]
+      [Servidor Nginx]
+    }
+    
+    node "Backend" {
+      [API Gateway]
+      [Microserviços]
+      [Serviço de Autenticação]
+      [Serviço de Agendamento]
+      [Serviço de Pagamentos]
+      [Serviço de Notificações]
+      [Serviço de Templates]
+    }
+    
+    node "Infraestrutura" {
+      [Redis Cache]
+      [RabbitMQ]
+      [Elasticsearch]
+      [Kibana]
+      [Prometheus]
+      [Grafana]
+    }
+  }
+  
+  node "Banco de Dados" {
+    database "PostgreSQL" {
+      [Dados Relacionais]
+    }
+    
+    database "MongoDB" {
+      [Dados Não Estruturados]
+    }
+  }
+  
+  node "Armazenamento" {
+    [Bucket S3]
+  }
+}
+
+node "Dispositivos Cliente" {
+  [Navegador Web]
+  [Aplicativo Mobile]
+}
+
+cloud "Serviços Externos" {
+  [API WhatsApp Business]
+  [Gateway de Pagamento]
+  [Serviço de Email]
+}
+
+' Conexões
+[Navegador Web] --> [Servidor Nginx] : HTTPS
+[Aplicativo Mobile] --> [API Gateway] : HTTPS
+[Servidor Nginx] --> [API Gateway] : HTTP
+[API Gateway] --> [Microserviços] : HTTP
+[Microserviços] --> [PostgreSQL] : TCP
+[Microserviços] --> [MongoDB] : TCP
+[Microserviços] --> [Redis Cache] : TCP
+[Microserviços] --> [RabbitMQ] : AMQP
+[Microserviços] --> [Bucket S3] : HTTPS
+[Microserviços] --> [API WhatsApp Business] : HTTPS
+[Microserviços] --> [Gateway de Pagamento] : HTTPS
+[Microserviços] --> [Serviço de Email] : SMTP
+[Elasticsearch] <-- [Microserviços] : HTTP
+[Prometheus] <-- [Microserviços] : HTTP
+
+@enduml

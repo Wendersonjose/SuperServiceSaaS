@@ -1,0 +1,74 @@
+@startuml Diagrama de Sequência - Agendamento de Serviço
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 15
+skinparam maxmessagesize 100
+skinparam sequenceParticipant underline
+
+actor Cliente as C
+participant "Interface\nWeb/App" as UI
+participant "Controlador de\nAgendamento" as CA
+participant "Serviço de\nAgendamento" as SA
+participant "Repositório de\nAgendamento" as RA
+participant "Serviço de\nNotificação" as SN
+participant "API\nWhatsApp" as WA
+
+title Diagrama de Sequência - Agendamento de Serviço
+
+autonumber
+
+C -> UI: Seleciona data e serviço
+activate UI
+
+UI -> CA: solicitaHorariosDisponiveis(data, serviço)
+activate CA
+
+CA -> SA: buscarHorariosDisponiveis(data, serviço)
+activate SA
+
+SA -> RA: consultarDisponibilidade(data, serviço)
+activate RA
+RA --> SA: retornaHorariosDisponiveis()
+deactivate RA
+
+SA --> CA: listaHorariosDisponiveis()
+deactivate SA
+
+CA --> UI: exibeHorariosDisponiveis()
+deactivate CA
+
+UI --> C: Mostra horários disponíveis
+C -> UI: Seleciona horário e confirma
+
+UI -> CA: confirmarAgendamento(cliente, serviço, data, hora)
+activate CA
+
+CA -> SA: criarAgendamento(cliente, serviço, data, hora)
+activate SA
+
+SA -> RA: salvarAgendamento(novoAgendamento)
+activate RA
+RA --> SA: agendamentoSalvo
+deactivate RA
+
+SA --> CA: agendamentoConfirmado
+deactivate SA
+
+CA -> SN: enviarConfirmacao(agendamento)
+activate SN
+
+SN -> WA: enviarMensagem(cliente.telefone, mensagemConfirmacao)
+activate WA
+WA --> SN: mensagemEnviada
+deactivate WA
+
+SN --> CA: notificacaoEnviada
+deactivate SN
+
+CA --> UI: exibeConfirmacaoAgendamento()
+deactivate CA
+
+UI --> C: Mostra confirmação do agendamento
+deactivate UI
+
+@enduml
