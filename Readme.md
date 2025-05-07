@@ -2,7 +2,8 @@
 
 Bem-vindo ao **SuperServiceSaaS**, uma plataforma SaaS para gestão de prestação de serviços, ideal para pequenas e médias empresas como lava jatos, oficinas mecânicas e salões de beleza. Este projeto é educacional e colaborativo, aberto a contribuições!
 
-![SuperServiceSaaS Banner](assets/painel1.png)
+![Dashboard Preview](./assents/painel1.png)
+
 
 ## Sumário
 
@@ -19,7 +20,8 @@ Bem-vindo ao **SuperServiceSaaS**, uma plataforma SaaS para gestão de prestaç�
 
 O **SuperServiceSaaS** é um sistema SaaS que oferece agendamento, controle de pagamentos, cadastro de serviços, integração com WhatsApp e customização por templates. Ele é projetado para ser escalável, acessível via internet e adaptável a diferentes segmentos de negócios.
 
-![Dashboard Preview](assets/painel2.png)
+![Dashboard Preview](./assents/painel2.png)
+
 
 ### Objetivos
 - Simplificar a gestão de serviços com uma interface intuitiva.
