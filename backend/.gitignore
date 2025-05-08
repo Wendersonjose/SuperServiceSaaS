@@ -1,0 +1,90 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.db
+*.sqlite3
+
+# Test coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+db.sqlite3
+media/
+staticfiles/
+static/
+*.sqlite3
+
+# Environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.venv.bak/
+.vscode/
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Security
+*.pem
+*.key
+.env
+.env.*
+secrets.json
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.mypy_cache/
+
+# Pytest
+.pytest_cache/
+*.cover
+.cache
+
+# Mac
+.DS_Store
+
+# Pycharm
+.idea/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Docker
+*.pid
+*.seed
+*.bak
